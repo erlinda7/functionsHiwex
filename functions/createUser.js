@@ -1,6 +1,7 @@
 /* eslint-disable quotes */
 /* eslint-disable max-len */
 const admin = require("firebase-admin");
+const twilio = require('./twilio');
 
 module.exports = function(req, res) {
   // res.status(200).send(req.body);
@@ -23,6 +24,15 @@ module.exports = function(req, res) {
         disabled: false,
       })
       // retorno de informacion
-      .then((user) => res.status(200).send(user))
+      .then((user) => {
+        const code = Math.floor(Math.random()*9999);
+        return twilio.messages
+            .create({
+              body: 'Your code is' + code,
+              from: '+13343103870',
+              to: '+59176457459',
+            })
+            .then(message => res.status(200).send(user));
+      })
       .catch((error) => res.status(501).send({err: 'algo salio mal', error}));
 };

@@ -24,15 +24,6 @@ module.exports = function(req, res) {
         disabled: false,
       })
       // retorno de informacion
-      .then((user) => {
-        const code = Math.floor(Math.random()*9999);
-        return twilio.messages
-            .create({
-              body: 'Your code is' + code,
-              from: '+13343103870',
-              to: '+59176457459',
-            })
-            .then(message => res.status(200).send(user));
-      })
+      .then((user) => res.status(200).send(user))
       .catch((error) => res.status(501).send({err: 'algo salio mal', error}));
 };
